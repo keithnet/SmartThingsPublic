@@ -1,0 +1,112 @@
+blueprint:
+  name: RGBGenie 12 button
+  description: Create automations for the RGBGenie
+  domain: automation
+  input:
+    rgb_genie_device:
+      name: RGB Genie
+      description: "RGB Genie device"
+      selector:
+        device:
+          integration: zha
+          manufacturer: RGBgenie
+          model: RGBgenie ZB-5001
+    button_1_on:
+      name: Button 1 - On
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_1_off:
+      name: Button 1 - Off
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_2_on:
+      name: Button 2 - On
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_2_off:
+      name: Button 2 - Off
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_3_on:
+      name: Button 3 - On
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_3_off:
+      name: Button 3 - Off
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_4_on:
+      name: Button 4 - On
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_4_off:
+      name: Button 4 - Off
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_5_on:
+      name: Button 5 - On
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+    button_5_off:
+      name: Button 5 - Off
+      description: "Action to run, when the button is pressed."
+      default: []
+      selector:
+        action: {}
+
+mode: single
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: zha_event
+
+variables:
+  device_id: !input rgb_genie_device
+
+condition: "{{ trigger.event.data.device_id == device_id }}"
+
+action:
+  - variables:
+      button_id: "{{ trigger.event.data.endpoint_id }}"
+      command: "{{ trigger.event.data.command }}"
+
+  - choose:
+      - conditions: '{{ button_id == 1 and command == "on"}}'
+        sequence: !input "button_1_on"
+      - conditions: '{{ button_id == 2 and command == "on"}}'
+        sequence: !input "button_2_on"
+      - conditions: '{{ button_id == 3 and command == "on"}}'
+        sequence: !input "button_3_on"
+      - conditions: '{{ button_id == 4 and command == "on"}}'
+        sequence: !input "button_4_on"
+      - conditions: '{{ button_id == 5 and command == "on"}}'
+        sequence: !input "button_5_on"
+      - conditions: '{{ button_id == 1 and command == "off"}}'
+        sequence: !input "button_1_off"
+      - conditions: '{{ button_id == 2 and command == "off"}}'
+        sequence: !input "button_2_off"
+      - conditions: '{{ button_id == 3 and command == "off"}}'
+        sequence: !input "button_3_off"
+      - conditions: '{{ button_id == 4 and command == "off"}}'
+        sequence: !input "button_4_off"
+      - conditions: '{{ button_id == 5 and command == "off"}}'
+        sequence: !input "button_5_off"
